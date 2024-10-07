@@ -6,16 +6,15 @@
 function mostFrequentStrings(arr) {
   const lengthCounts = arr.reduce((acc, item) => {
     const length = item.length;
-    const count = (acc.get(length) || 0) + 1;
-    acc.set(length, count);
+    acc.set(length, (acc.get(length) || 0) + 1);
     return acc;
   }, new Map());
 
   const maxCount = Math.max(...Array.from(lengthCounts.values()));
-  const mostFrequentLength = Array.from(lengthCounts.keys()).filter(
+  const mostFrequentLengths = Array.from(lengthCounts.keys()).filter(
     (length) => lengthCounts.get(length) === maxCount
   );
-  return arr.filter((item) => mostFrequentLength.includes(item.length));
+  return arr.filter((item) => mostFrequentLengths.includes(item.length));
 }
 
 module.exports = mostFrequentStrings;
