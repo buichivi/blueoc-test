@@ -3,7 +3,7 @@
  *  @param { string[] } arr
  *  @return { string[] }
  */
-export default function mostFrequentStrings(arr) {
+function mostFrequentStrings(arr) {
   const lengthCounts = arr.reduce((acc, item) => {
     const length = item.length;
     const count = (acc.get(length) || 0) + 1;
@@ -17,3 +17,5 @@ export default function mostFrequentStrings(arr) {
   );
   return arr.filter((item) => mostFrequentLength.includes(item.length));
 }
+
+module.exports = mostFrequentStrings;
