@@ -4,4 +4,7 @@
  * @return { number }
  */
 
-function sumOfTopTwoNumbers(arr) {}
+function sumOfTopTwoNumbers(arr) {
+  const [first, second] = arr.sort((a, b) => b - a);
+  return first + second;
+}
