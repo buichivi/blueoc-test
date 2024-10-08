@@ -9,20 +9,10 @@ function App() {
   const dispatch = useAppDispatch();
   const [isAddingPost, setIsAddingPost] = useState(false);
 
-  const userIds = useMemo(() => {
-    return Array.from(
-      posts.reduce((acc, post) => {
-        const userId = post.userId;
-        acc.add(userId);
-        return acc;
-      }, new Set())
-    ) as number[];
-  }, [posts]);
+  const userIds = useMemo(() => Array.from(new Set(posts.map((post) => post.userId))), [posts]);
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchPosts());
-    }
+    if (status === 'idle') dispatch(fetchPosts());
   }, [status, dispatch]);
 
   return (
@@ -56,10 +46,10 @@ function App() {
       </div>
       {status === 'loading' && <h3>Loading posts...</h3>}
       {status === 'failed' && <h3>Error: {error}</h3>}
-      <div className='grid grid-cols-4 gap-4 '>
-        {posts.map((post) => {
-          return <PostItem key={`postId-${post.id}`} post={post} />;
-        })}
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 '>
+        {posts.map((post) => (
+          <PostItem key={`postId-${post.id}`} post={post} />
+        ))}
       </div>
     </div>
   );

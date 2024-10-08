@@ -59,7 +59,10 @@ const CreatePostForm = ({ userIds, setIsOpen }: Props) => {
   }, [status]);
 
   return (
-    <form className='w-1/3 min-h-1/2 border rounded-md bg-white p-4' onSubmit={handleCreatePost}>
+    <form
+      className='w-2/3 lg:w-1/3 min-h-1/2 border rounded-md bg-white p-4'
+      onSubmit={handleCreatePost}
+    >
       <h3 className='text-center text-2xl'>Create post</h3>
       <div className='my-1'>
         <label htmlFor='userId' className='mb-1 flex items-center justify-between'>

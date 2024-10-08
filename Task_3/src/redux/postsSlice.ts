@@ -25,13 +25,10 @@ export const fetchPosts = createAsyncThunk<Post[]>('posts/fetchPosts', async () 
   return res.data;
 });
 
-export const createPost = createAsyncThunk<Post, Omit<Post, 'id'>>(
-  'posts/createPost',
-  async (newPost) => {
-    const res = await axios.post('https://jsonplaceholder.typicode.com/posts', newPost);
-    return res.data;
-  }
-);
+export const createPost = createAsyncThunk<Post, Omit<Post, 'id'>>('posts/createPost', async (newPost) => {
+  const res = await axios.post('https://jsonplaceholder.typicode.com/posts', newPost);
+  return res.data;
+});
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -60,8 +57,7 @@ const postsSlice = createSlice({
 
         // fix create post always return new post with id = 101
         const maxId = Math.max(...state.items.map((item) => item.id));
-        if (action.payload.id <= maxId)
-          state.items = [{ ...action.payload, id: maxId + 1 }, ...state.items];
+        if (action.payload.id <= maxId) state.items = [{ ...action.payload, id: maxId + 1 }, ...state.items];
         else state.items = [action.payload, ...state.items];
       })
       .addCase(createPost.rejected, (state, action) => {
