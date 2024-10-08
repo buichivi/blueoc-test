@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-type Post = {
+export type Post = {
   userId: number;
   id: number;
   title: string;
