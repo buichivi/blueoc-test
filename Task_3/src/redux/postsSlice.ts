@@ -57,7 +57,12 @@ const postsSlice = createSlice({
       })
       .addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
         state.status = 'succeeded';
-        state.items = [action.payload, ...state.items];
+
+        // fix create post always return new post with id = 101
+        const maxId = Math.max(...state.items.map((item) => item.id));
+        if (action.payload.id <= maxId)
+          state.items = [{ ...action.payload, id: maxId + 1 }, ...state.items];
+        else state.items = [action.payload, ...state.items];
       })
       .addCase(createPost.rejected, (state, action) => {
         state.status = 'failed';
