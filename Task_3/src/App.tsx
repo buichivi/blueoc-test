@@ -25,13 +25,6 @@ function App() {
     }
   }, [status, dispatch]);
 
-  if (status == 'loading') {
-    return <h1>Loading...</h1>;
-  }
-  if (status == 'failed') {
-    return <h1>Error: {error}</h1>;
-  }
-
   return (
     <div className='p-10'>
       <h1 className='text-center text-4xl py-4'>Posts</h1>
@@ -57,10 +50,12 @@ function App() {
               className='absolute top-0 left-0 size-full -z-[1] bg-[#0000009a]'
               onClick={() => setIsAddingPost(false)}
             ></div>
-            <CreatePostForm userIds={userIds} isOpen={isAddingPost} setIsOpen={setIsAddingPost} />
+            <CreatePostForm userIds={userIds} setIsOpen={setIsAddingPost} />
           </div>
         </div>
       </div>
+      {status === 'loading' && <h3>Loading posts...</h3>}
+      {status === 'failed' && <h3>Error: {error}</h3>}
       <div className='grid grid-cols-4 gap-4 '>
         {posts.map((post) => {
           return <PostItem key={`postId-${post.id}`} post={post} />;

@@ -10,7 +10,7 @@ export type Post = {
 
 type PostState = {
   items: Post[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: 'idle' | 'loading' | 'succeeded' | 'failed' | 'creating' | 'creating faild';
   error: string | null;
 };
 
@@ -53,7 +53,7 @@ const postsSlice = createSlice({
       })
       //handle createPost
       .addCase(createPost.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'creating';
       })
       .addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
         state.status = 'succeeded';
@@ -65,7 +65,7 @@ const postsSlice = createSlice({
         else state.items = [action.payload, ...state.items];
       })
       .addCase(createPost.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = 'creating faild';
         state.error = action.error.message || 'Failed to create post';
       });
   },
