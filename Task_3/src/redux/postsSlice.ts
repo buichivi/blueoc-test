@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export type Post = {
@@ -25,22 +25,43 @@ export const fetchPosts = createAsyncThunk<Post[]>('posts/fetchPosts', async () 
   return res.data;
 });
 
+export const createPost = createAsyncThunk<Post, Omit<Post, 'id'>>(
+  'posts/createPost',
+  async (newPost) => {
+    const res = await axios.post('https://jsonplaceholder.typicode.com/posts', newPost);
+    return res.data;
+  }
+);
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      //handle fetchPosts
       .addCase(fetchPosts.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchPosts.fulfilled, (state, action) => {
+      .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<Post[]>) => {
         state.status = 'succeeded';
         state.items = action.payload;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch posts';
+      })
+      //handle createPost
+      .addCase(createPost.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
+        state.status = 'succeeded';
+        state.items = [action.payload, ...state.items];
+      })
+      .addCase(createPost.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || 'Failed to create post';
       });
   },
 });
